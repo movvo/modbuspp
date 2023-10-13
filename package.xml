@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>modbuspp</name>
+  <version>0.0.3</version>
+  <description>Library implementing ODVA EtherNet/IP (Industrial Protocol).</description>
+
+  <license>GNU</license>
+  <maintainer email="lvfanzhe@hotmail.com">Fanzhe Lyu</maintainer>
+  <author email="lvfanzhe@hotmail.com">Fanzhe Lyu</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend>
+
+</package>

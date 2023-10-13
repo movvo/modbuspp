@@ -1,28 +1,44 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.5)
 project(modbuspp)
-set(CMAKE_CXX_STANDARD 11)
 
-
-if(WIN32)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-else()
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
+# Default to C++14
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 14)
 endif()
 
-# BUILD INTERFACE LIB
-install(FILES
-    "modbus.h"
-    DESTINATION
-    include/modbuspp
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp)
+
+set(dependencies
+  rclcpp
 )
-# BUILD EXAMPLE
-set(EXAMPLE_FILES example/example.cpp)
-add_executable(modbuspp_example ${EXAMPLE_FILES})
-target_compile_definitions(modbuspp_example
-PUBLIC
-    ENABLE_MODBUSPP_LOGGING
+
+include_directories(
+    include
 )
-target_include_directories(modbuspp_example
-PUBLIC
-    .
+
+## Declare a cpp library for just Ethernet/IP generic stuff
+add_library(${PROJECT_NAME} SHARED
+  "src/modbus.cpp"
 )
+
+ament_target_dependencies(${PROJECT_NAME} 
+                          ${dependencies})
+
+## Mark executables and libraries for installation
+install(DIRECTORY include/
+  DESTINATION include/
+)
+
+install(TARGETS
+  ${PROJECT_NAME}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+ament_export_include_directories(include)
+ament_export_libraries(${PROJECT_NAME})
+ament_export_dependencies(${dependencies})
+
+ament_package()
